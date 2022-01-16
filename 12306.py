@@ -1,4 +1,4 @@
-import requests, datetime, logging
+import requests, datetime, logging, time, traceback
 from Push import PushMessage
 
 user_agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
@@ -221,10 +221,14 @@ def main():
             "date": "2022-01-30"
         }
     ]
-    push = Query(l)
-    if push == "":
-        PushMessage("发现火车票", push)
-    pass
+    while True:
+        time.sleep(10)
+        try:
+            push = Query(l)
+            if push == "":
+                PushMessage("发现火车票", push)
+        except Exception as e:
+            logging.error("Exception: %s", traceback.format_exc())
 
 if __name__ == "__main__":
     main()
