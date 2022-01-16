@@ -1,4 +1,4 @@
-import requests, datetime, logging, time, traceback
+import requests, datetime, logging, time, traceback, random
 from Push import PushMessage
 
 user_agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
@@ -208,7 +208,9 @@ def Query(list):
     return push
 
 def main():
-    logging.basicConfig(level = logging.INFO)
+    name = "12306.txt"
+    LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+    logging.basicConfig(filename = name, level = logging.INFO, format = LOG_FORMAT)
     l = [
         {
             "from_station": "广州",
@@ -222,13 +224,14 @@ def main():
         }
     ]
     while True:
-        time.sleep(10)
+        time.sleep(random.randint(0, 60))
         try:
             push = Query(l)
             if push == "":
                 PushMessage("发现火车票", push)
         except Exception as e:
             logging.error("Exception: %s", traceback.format_exc())
+        time.sleep(600)
 
 if __name__ == "__main__":
     main()
